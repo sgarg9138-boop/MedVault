@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidPhoneNumber, isValidPinCode } from "./formatters";
 
 export const recordUploadSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(100),
@@ -32,11 +33,17 @@ export type MedicationInput = z.infer<typeof medicationSchema>;
 
 export const checkoutSchema = z.object({
   fullName: z.string().min(3, "Full name must be at least 3 characters"),
-  phone: z.string().min(10, "Valid phone number is required"),
-  street: z.string().min(5, "Street address is required"),
-  city: z.string().min(2, "City is required"),
-  state: z.string().min(2, "State/Province is required"),
-  zipCode: z.string().min(4, "Valid Postal/ZIP code is required"),
+  phone: z.string().refine(isValidPhoneNumber, {
+    message: "Enter a valid 10-digit Indian mobile number (+91) or international phone number",
+  }),
+  street: z.string().min(5, "House / Flat / Street address is required"),
+  locality: z.string().optional(),
+  city: z.string().min(2, "City or District is required"),
+  state: z.string().min(2, "State is required"),
+  zipCode: z.string().refine(isValidPinCode, {
+    message: "Enter a valid 6-digit PIN code (e.g. 560038) or postal code",
+  }),
+  country: z.string().default("India"),
   paymentMethod: z.enum(["card", "cod", "insurance"]),
   prescriptionConfirmed: z.boolean().optional(),
 });
@@ -65,7 +72,9 @@ export const profileSchema = z.object({
   allergies: z.string().optional(),
   chronicConditions: z.string().optional(),
   emergencyName: z.string().min(2, "Emergency contact name is required"),
-  emergencyPhone: z.string().min(10, "Emergency contact phone is required"),
+  emergencyPhone: z.string().refine(isValidPhoneNumber, {
+    message: "Enter a valid emergency contact phone number (e.g. +91 98765 43210)",
+  }),
 });
 
 export type ProfileInput = z.infer<typeof profileSchema>;

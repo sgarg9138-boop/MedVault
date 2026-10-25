@@ -26,16 +26,16 @@ export default function RemindersPage() {
     dosage: "",
     frequency: "Once daily",
     instructions: "Take with water after breakfast",
-    prescribedBy: "Dr. Elena Rostova",
+    prescribedBy: "Dr. Rajesh Sharma",
     timeOfDay: ["Morning"],
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const slots = [
-    { id: "Morning", label: "Morning (08:00 AM)", icon: Sun, color: "text-amber-500" },
-    { id: "Afternoon", label: "Afternoon (01:00 PM)", icon: Sun, color: "text-amber-600" },
-    { id: "Evening", label: "Evening (07:00 PM)", icon: Sunset, color: "text-orange-500" },
-    { id: "Night", label: "Night (10:00 PM)", icon: Moon, color: "text-indigo-500" },
+    { id: "Morning", label: "Morning (08:00 AM IST)", icon: Sun, color: "text-amber-500" },
+    { id: "Afternoon", label: "Afternoon (01:00 PM IST)", icon: Sun, color: "text-amber-600" },
+    { id: "Evening", label: "Evening (07:00 PM IST)", icon: Sunset, color: "text-orange-500" },
+    { id: "Night", label: "Night (10:00 PM IST)", icon: Moon, color: "text-indigo-500" },
   ] as const;
 
   const handleAddSubmit = (e: React.FormEvent) => {
@@ -68,7 +68,7 @@ export default function RemindersPage() {
       dosage: "",
       frequency: "Once daily",
       instructions: "Take with water after breakfast",
-      prescribedBy: "Dr. Elena Rostova",
+      prescribedBy: "Dr. Rajesh Sharma",
       timeOfDay: ["Morning"],
     });
     setFormErrors({});
@@ -347,7 +347,7 @@ export default function RemindersPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Dr. Elena Rostova"
+                  placeholder="e.g. Dr. Rajesh Sharma, MD"
                   value={formData.prescribedBy}
                   onChange={(e) => setFormData({ ...formData, prescribedBy: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"

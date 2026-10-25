@@ -14,6 +14,7 @@ import {
 import { useStore } from "@/lib/store";
 import { PHARMACY_PRODUCTS } from "@/lib/mockData";
 import { MedicineProduct } from "@/lib/types";
+import { formatCurrency } from "@/lib/formatters";
 
 export default function PharmacyPage() {
   const { addToCart, cartCount } = useStore();
@@ -75,7 +76,7 @@ export default function PharmacyPage() {
               MedVault Pharmacy & Dispensary
             </h1>
             <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">
-              Verified Dispensary
+              Simulated Demo Catalog
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1">
@@ -110,9 +111,9 @@ export default function PharmacyPage() {
       <div className="p-4 rounded-2xl bg-teal-50/70 border border-teal-200/80 text-xs text-teal-950 flex items-start gap-3">
         <FileCheck2 className="w-5 h-5 text-teal-700 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <p className="font-bold">Prescription Policy & Dispensing Protocol</p>
+          <p className="font-bold">Prescription Policy & Dispensing Protocol (Simulated Demo)</p>
           <p className="text-[11px] text-teal-900 leading-relaxed">
-            Medications labelled <strong>Rx Required</strong> are fulfilled only after digital verification against your active prescription records in your MedVault Vault. Over-the-counter wellness supplies ship directly.
+            Medications labelled <strong>Rx Required</strong> are verified against your active digital prescription vault. Products and pricing in Indian Rupees (₹) are simulated for demonstration purposes; MedVault does not process live pharmaceutical orders.
           </p>
         </div>
       </div>
@@ -196,7 +197,7 @@ export default function PharmacyPage() {
               <div className="pt-3 border-t border-slate-100 space-y-3">
                 <div className="flex items-baseline justify-between">
                   <span className="text-lg font-extrabold text-slate-900">
-                    ${product.price.toFixed(2)}
+                    {formatCurrency(product.price)}
                   </span>
                   <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
                     In Stock

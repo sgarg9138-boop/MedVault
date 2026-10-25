@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { shareLinkSchema, ShareLinkInput } from "@/lib/validations";
+import { formatDate } from "@/lib/formatters";
 
 export default function SharingPage() {
   const { shareLinks, addShareLink, revokeShareLink } = useStore();
@@ -183,7 +184,7 @@ export default function SharingPage() {
               <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
                 <div className="flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Expires: {share.expiresAt}</span>
+                  <span>Expires: {formatDate(share.expiresAt)}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Eye className="w-3.5 h-3.5 text-slate-400" />
@@ -219,25 +220,25 @@ export default function SharingPage() {
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
             <div>
               <p className="font-semibold text-slate-800">
-                Dr. Marcus Vance accessed &quot;Lipid Profile &amp; CMP&quot;
+                Dr. Rajesh Sharma accessed &quot;Lipid Profile &amp; CMP&quot;
               </p>
               <p className="text-[11px] text-slate-500">
-                PIN Verified • IP: 198.51.100.42 (St. Jude Heart Network)
+                PIN Verified • IP: 103.21.244.12 (Metro Healthcare Network Demo)
               </p>
             </div>
-            <span className="text-[11px] text-slate-400">Oct 21, 2026 at 14:22</span>
+            <span className="text-[11px] text-slate-400">21/10/2026 at 02:22 PM IST</span>
           </div>
 
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
             <div>
               <p className="font-semibold text-slate-800">
-                Apex Health Insurance Adjuster downloaded verification summary
+                National Star Health Insurance Adjuster downloaded verification summary
               </p>
               <p className="text-[11px] text-slate-500">
-                PIN Verified • IP: 203.0.113.19 (Apex Claims Gateway)
+                PIN Verified • IP: 103.14.120.45 (Star Claims Gateway Demo)
               </p>
             </div>
-            <span className="text-[11px] text-slate-400">Sept 24, 2026 at 09:15</span>
+            <span className="text-[11px] text-slate-400">24/09/2026 at 09:15 AM IST</span>
           </div>
         </div>
       </div>
@@ -270,7 +271,7 @@ export default function SharingPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Dr. Robert Chen"
+                    placeholder="e.g. Dr. Rajesh Sharma"
                     value={formData.recipientName}
                     onChange={(e) => setFormData({ ...formData, recipientName: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
@@ -305,7 +306,7 @@ export default function SharingPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Northwest Cardiology Associates"
+                  placeholder="e.g. Metro Multi-Speciality Clinic"
                   value={formData.organization}
                   onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"

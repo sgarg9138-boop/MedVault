@@ -12,16 +12,18 @@ import {
   Bell,
   Share2,
   ShieldCheck,
+  AlertOctagon,
   Menu,
   X,
   Database,
   ExternalLink,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { SosEmergencyModal } from "@/components/SosEmergencyModal";
 
 export function Navbar() {
   const pathname = usePathname();
-  const { cartCount, isSupabaseConnected } = useStore();
+  const { cartCount, isSupabaseConnected, isSosModalOpen, setIsSosModalOpen, patient } = useStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
 
@@ -92,7 +94,21 @@ export function Navbar() {
             </div>
 
             {/* Right Side Icons & Actions */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              {/* SOS Emergency Button */}
+              <button
+                type="button"
+                onClick={() => setIsSosModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-xs hover:shadow-sm transition-all border border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 cursor-pointer shrink-0"
+                aria-haspopup="dialog"
+                aria-label="SOS Emergency Assistance"
+                title="SOS Emergency Assistance"
+              >
+                <AlertOctagon className="w-4 h-4 text-white animate-pulse" />
+                <span className="hidden sm:inline">SOS Emergency</span>
+                <span className="sm:hidden font-extrabold tracking-wider">SOS</span>
+              </button>
+
               {/* Environment Status Badge */}
               <button
                 onClick={() => setStatusModalOpen(true)}
@@ -127,10 +143,12 @@ export function Navbar() {
                 className="hidden sm:flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors"
               >
                 <div className="w-6 h-6 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs">
-                  SJ
+                  {patient.fullName.charAt(0)}
                 </div>
                 <div className="flex flex-col text-left">
-                  <span className="text-xs font-semibold text-slate-800 leading-tight">Sarah J.</span>
+                  <span className="text-xs font-semibold text-slate-800 leading-tight">
+                    {patient.fullName.replace(/\s*\(Demo Patient\)/, "")}
+                  </span>
                   <span className="text-[10px] text-slate-500 leading-none">Patient (Demo)</span>
                 </div>
               </Link>
@@ -153,11 +171,11 @@ export function Navbar() {
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs">
-                  SJ
+                  {patient.fullName.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-900">Sarah Jenkins (Demo Patient)</p>
-                  <p className="text-[11px] text-slate-500">Apex Health Plan • Blood A+</p>
+                  <p className="text-xs font-bold text-slate-900">{patient.fullName}</p>
+                  <p className="text-[11px] text-slate-500">{patient.insurance.provider} • Blood {patient.bloodGroup}</p>
                 </div>
               </div>
               <button
@@ -190,21 +208,37 @@ export function Navbar() {
               })}
             </div>
 
-            <div className="mt-4 pt-3 border-t border-slate-100 flex gap-2">
-              <Link
-                href="/profile"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 text-center py-2 text-xs font-semibold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200"
+            <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setIsSosModalOpen(true);
+                }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-xs transition-colors"
+                aria-haspopup="dialog"
+                aria-label="SOS Emergency Assistance"
               >
-                View Patient Profile
-              </Link>
-              <Link
-                href="/cart"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 text-center py-2 text-xs font-semibold text-white bg-teal-600 rounded-lg hover:bg-teal-700"
-              >
-                Pharmacy Cart ({cartCount})
-              </Link>
+                <AlertOctagon className="w-4 h-4 animate-pulse" />
+                <span>Trigger SOS Emergency Assistance</span>
+              </button>
+
+              <div className="flex gap-2">
+                <Link
+                  href="/profile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 text-center py-2 text-xs font-semibold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200"
+                >
+                  View Patient Profile
+                </Link>
+                <Link
+                  href="/cart"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex-1 text-center py-2 text-xs font-semibold text-white bg-teal-600 rounded-lg hover:bg-teal-700"
+                >
+                  Pharmacy Cart ({cartCount})
+                </Link>
+              </div>
             </div>
           </div>
         )}
@@ -280,6 +314,12 @@ export function Navbar() {
           </div>
         </div>
       )}
+
+      {/* Global Shared SOS Emergency Modal */}
+      <SosEmergencyModal
+        isOpen={isSosModalOpen}
+        onClose={() => setIsSosModalOpen(false)}
+      />
     </>
   );
 }

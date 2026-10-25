@@ -136,7 +136,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-teal-600" />
-                  <span>HIPAA-Architecture Ready</span>
+                  <span>Privacy-First Architecture</span>
                 </div>
               </div>
             </div>
@@ -155,7 +155,7 @@ export default function HomePage() {
                       </div>
                       <div>
                         <h2 className="text-xs font-bold leading-tight">Patient Clinical Overview</h2>
-                        <p className="text-[10px] text-slate-400">Sarah Jenkins • Blood A+ • ID: pt-88291</p>
+                        <p className="text-[10px] text-slate-400">Aarav Sharma • Blood A+ • ID: pt-88291</p>
                       </div>
                     </div>
                     <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-teal-900/60 text-teal-300 border border-teal-700/50">
@@ -200,7 +200,7 @@ export default function HomePage() {
                               Comprehensive Metabolic Panel & Lipid Profile
                             </p>
                             <p className="text-[11px] text-slate-500">
-                              Metro Central Diagnostics • Dr. Rostova
+                              Metro Central Diagnostic Lab • Dr. Rajesh Sharma
                             </p>
                           </div>
                         </div>

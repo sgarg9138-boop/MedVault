@@ -45,6 +45,8 @@ interface StoreContextType {
   activeAnalyzerRecord: MedicalRecord | null;
   setActiveAnalyzerRecord: (rec: MedicalRecord | null) => void;
   resetToDemoDefaults: () => void;
+  isSosModalOpen: boolean;
+  setIsSosModalOpen: (open: boolean) => void;
 }
 
 const StoreContext = createContext<StoreContextType | null>(null);
@@ -66,6 +68,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
   const [shareLinks, setShareLinks] = useState<ShareLink[]>(INITIAL_SHARES);
   const [activeAnalyzerRecord, setActiveAnalyzerRecord] = useState<MedicalRecord | null>(INITIAL_RECORDS[0]);
+  const [isSosModalOpen, setIsSosModalOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Load from localStorage on client mount
@@ -205,7 +208,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       id,
       date: today,
       status: "Processing",
-      trackingNumber: `MV-TRK-${Math.floor(100000 + Math.random() * 900000)}`,
+      trackingNumber: `MV-IND-${Math.floor(100000 + Math.random() * 900000)}`,
       estimatedDelivery: "Expected in 2 business days",
       ...orderData,
     };
@@ -277,6 +280,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         activeAnalyzerRecord,
         setActiveAnalyzerRecord,
         resetToDemoDefaults,
+        isSosModalOpen,
+        setIsSosModalOpen,
       }}
     >
       {children}

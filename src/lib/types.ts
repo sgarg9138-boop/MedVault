@@ -79,9 +79,11 @@ export interface Order {
   shippingAddress: {
     fullName: string;
     street: string;
+    locality?: string;
     city: string;
     state: string;
     zipCode: string;
+    country?: string;
     phone: string;
   };
   paymentMethod: string;

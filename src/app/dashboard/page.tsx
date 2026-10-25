@@ -14,11 +14,15 @@ import {
   Clock,
   ShieldCheck,
   AlertTriangle,
+  AlertOctagon,
   ArrowRight,
   ExternalLink,
   Plus,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { VitalsTrendChart } from "@/components/VitalsTrendChart";
+import { GlycemicTrendChart } from "@/components/GlycemicTrendChart";
+import { formatCurrency, formatDate } from "@/lib/formatters";
 
 export default function DashboardPage() {
   const {
@@ -29,6 +33,7 @@ export default function DashboardPage() {
     orders,
     shareLinks,
     setActiveAnalyzerRecord,
+    setIsSosModalOpen,
   } = useStore();
 
   const activeShares = shareLinks.filter((s) => s.isActive);
@@ -56,7 +61,7 @@ export default function DashboardPage() {
                 </span>
               </div>
               <p className="text-xs text-slate-300 mt-1">
-                DOB: {patient.dob} • Gender: {patient.gender} • Blood Group:{" "}
+                DOB: {formatDate(patient.dob)} • Gender: {patient.gender} • Blood Group:{" "}
                 <span className="font-bold text-teal-300">{patient.bloodGroup}</span>
               </p>
               <p className="text-[11px] text-slate-400 mt-0.5">
@@ -66,6 +71,16 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setIsSosModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-md hover:shadow-lg transition-all border border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-slate-900 cursor-pointer"
+              aria-haspopup="dialog"
+              aria-label="SOS Emergency Assistance"
+            >
+              <AlertOctagon className="w-4 h-4 text-white animate-pulse" />
+              <span>SOS Emergency</span>
+            </button>
             <Link
               href="/records"
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs font-semibold shadow-xs transition-colors"
@@ -189,6 +204,12 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* Vitals & Glycemic Clinical Trends */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <VitalsTrendChart records={records} />
+        <GlycemicTrendChart records={records} />
+      </div>
+
       {/* Main Content Two-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column: Recent Records & AI Analyzer Trigger */}
@@ -272,7 +293,7 @@ export default function DashboardPage() {
             </div>
 
             <p className="text-xs text-slate-700 leading-relaxed">
-              Your recent bloodwork shows excellent glycemic stability (Fasting Glucose: 92 mg/dL) and robust kidney function. Total cholesterol is mildly elevated at 215 mg/dL with LDL at 132 mg/dL. Consider discussing lifestyle or statin therapy adjustments with Dr. Rostova.
+              Your recent bloodwork shows excellent glycemic stability (Fasting Glucose: 92 mg/dL) and robust kidney function. Total cholesterol is mildly elevated at 215 mg/dL with LDL at 132 mg/dL. Consider discussing lifestyle or statin therapy adjustments with Dr. Rajesh Sharma.
             </p>
 
             <div className="flex flex-wrap items-center gap-2 pt-1">
@@ -406,7 +427,7 @@ export default function DashboardPage() {
                     {order.items.map((i) => `${i.product.name} (x${i.quantity})`).join(", ")}
                   </p>
                   <div className="flex items-center justify-between text-[11px] pt-1 text-slate-500 border-t border-slate-200/60">
-                    <span>Total: ${order.total.toFixed(2)}</span>
+                    <span>Total: {formatCurrency(order.total)}</span>
                     <span className="text-teal-700 font-medium">{order.estimatedDelivery}</span>
                   </div>
                 </div>

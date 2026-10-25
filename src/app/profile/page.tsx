@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { profileSchema, ProfileInput } from "@/lib/validations";
+import { formatDate } from "@/lib/formatters";
 
 export default function ProfilePage() {
   const { patient, updatePatient } = useStore();
@@ -121,7 +122,7 @@ export default function ProfilePage() {
             <div>
               <h2 className="text-lg font-bold text-slate-900">{patient.fullName}</h2>
               <p className="text-xs text-slate-500">
-                DOB: {patient.dob} • Gender: {patient.gender} • Patient ID: {patient.id}
+                DOB: {formatDate(patient.dob)} • Gender: {patient.gender} • Patient ID: {patient.id}
               </p>
             </div>
           </div>
@@ -368,10 +369,14 @@ export default function ProfilePage() {
                   </label>
                   <input
                     type="text"
+                    placeholder="e.g. +91 98765 43210"
                     value={formData.emergencyPhone}
                     onChange={(e) => setFormData({ ...formData, emergencyPhone: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
                   />
+                  {formErrors.emergencyPhone && (
+                    <p className="text-rose-600 text-[11px] mt-1">{formErrors.emergencyPhone}</p>
+                  )}
                 </div>
               </div>
 

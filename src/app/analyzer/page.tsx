@@ -279,7 +279,7 @@ export default function AnalyzerPage() {
                     Physician Discussion Preparation
                   </h3>
                   <p className="text-[11px] text-slate-500">
-                    Targeted questions prepared for your next appointment with Dr. Rostova
+                    Targeted questions prepared for your next appointment with Dr. Rajesh Sharma
                   </p>
                 </div>
               </div>

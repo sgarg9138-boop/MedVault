@@ -21,6 +21,7 @@ import {
 import { useStore } from "@/lib/store";
 import { MedicalRecord, RecordCategory } from "@/lib/types";
 import { recordUploadSchema, RecordUploadInput } from "@/lib/validations";
+import { formatDate } from "@/lib/formatters";
 
 export default function RecordsPage() {
   const { records, addRecord, deleteRecord, setActiveAnalyzerRecord } = useStore();
@@ -217,7 +218,7 @@ export default function RecordsPage() {
                     </p>
                     <p className="flex items-center gap-1.5">
                       <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span>{record.date} • {record.fileSize}</span>
+                      <span>{formatDate(record.date)} • {record.fileSize}</span>
                     </p>
                   </div>
                 </div>
@@ -280,7 +281,7 @@ export default function RecordsPage() {
                 </span>
                 <h2 className="text-lg font-bold text-slate-900">{viewRecord.title}</h2>
                 <p className="text-xs text-slate-500">
-                  {viewRecord.facility} • {viewRecord.doctorName} • {viewRecord.date}
+                  {viewRecord.facility} • {viewRecord.doctorName} • {formatDate(viewRecord.date)}
                 </p>
               </div>
               <button
@@ -470,7 +471,7 @@ export default function RecordsPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Dr. Elena Rostova"
+                    placeholder="e.g. Dr. Rajesh Sharma, MD"
                     value={formData.doctorName}
                     onChange={(e) => setFormData({ ...formData, doctorName: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
@@ -486,7 +487,7 @@ export default function RecordsPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Metro Health Lab"
+                    placeholder="e.g. Metro Central Diagnostic Laboratory"
                     value={formData.facility}
                     onChange={(e) => setFormData({ ...formData, facility: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"

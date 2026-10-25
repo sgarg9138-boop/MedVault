@@ -19,13 +19,13 @@ export default function AssistantPage() {
       id: "msg-1",
       sender: "assistant",
       content:
-        "Hello Sarah. I'm your MedVault Clinical AI Assistant. I have indexed your current profile (Allergies: Penicillin, Peanuts; Conditions: Mild Hypertension; Medications: Lisinopril 10mg) and your latest lab report from Metro Central Diagnostic. How can I help you understand your health data today?",
+        "Hello Aarav. I'm your MedVault Clinical AI Assistant. I have indexed your current profile (Allergies: Penicillin, Peanuts; Conditions: Mild Hypertension; Medications: Lisinopril 10mg) and your latest lab report from Metro Central Diagnostic Laboratory, New Delhi. How can I help you understand your health data today?",
       timestamp: "Just now",
       suggestedActions: [
         "Explain my cholesterol panel in simple terms",
         "Can I take Ibuprofen with my Lisinopril?",
         "What foods help lower LDL cholesterol naturally?",
-        "What should I ask Dr. Vance at my next visit?",
+        "What should I ask Dr. Sharma at my next visit?",
       ],
     },
   ]);
@@ -34,13 +34,13 @@ export default function AssistantPage() {
 
   const cannedAnswers: Record<string, string> = {
     cholesterol:
-      "Based on your report from Sept 18, 2026: Your Total Cholesterol is 215 mg/dL (target is <200) and your LDL is 132 mg/dL (target is <100). This is considered borderline elevated. On the positive side, your HDL ('good cholesterol') is robust at 58 mg/dL, and your triglycerides and glucose (92 mg/dL) are optimal. Doctors usually suggest reducing saturated animal fats and increasing soluble fiber before considering medication.",
+      "Based on your report from 18/09/2026: Your Total Cholesterol is 215 mg/dL (target is <200) and your LDL is 132 mg/dL (target is <100). This is considered borderline elevated. On the positive side, your HDL ('good cholesterol') is robust at 58 mg/dL, and your triglycerides and glucose (92 mg/dL) are optimal. Doctors usually suggest reducing saturated dietary fats and increasing soluble fiber before considering medication.",
     ibuprofen:
-      "⚠️ Drug Interaction Alert: Taking NSAIDs like Ibuprofen with Lisinopril (an ACE inhibitor) requires caution. NSAIDs can diminish the blood pressure-lowering effect of Lisinopril and increase stress on your kidneys. For mild aches or fever, Acetaminophen (Tylenol) is generally preferred for patients on Lisinopril unless your physician specifies otherwise.",
+      "⚠️ Drug Interaction Alert: Taking NSAIDs like Ibuprofen with Lisinopril (an ACE inhibitor) requires caution. NSAIDs can diminish the blood pressure-lowering effect of Lisinopril and increase stress on your kidneys. For mild aches or fever, Paracetamol (Crocin / Dolo) is generally preferred for patients on Lisinopril unless your physician specifies otherwise.",
     foods:
-      "Here are evidence-based nutritional strategies to help lower LDL:\n1. Soluble Fiber: Oats, barley, beans, and lentils bind to cholesterol in your digestive tract.\n2. Healthy Monounsaturated Fats: Olive oil, avocados, and walnuts.\n3. Plant Sterols & Stanols: Fortified foods or natural nuts that block cholesterol absorption.\n4. Fatty Fish: Rich in Omega-3 fatty acids to help cardiovascular resilience.",
+      "Here are evidence-based nutritional strategies to help lower LDL:\n1. Soluble Fiber: Oats, barley, beans, and lentils bind to cholesterol in your digestive tract.\n2. Healthy Monounsaturated Fats: Mustard oil, olive oil, walnuts, and flaxseeds.\n3. Plant Sterols & Stanols: Natural nuts and whole grains that help manage cholesterol absorption.\n4. Fatty Fish & Chia: Rich in Omega-3 fatty acids supporting cardiovascular resilience.",
     questions:
-      "Top 3 questions tailored for Dr. Vance (Cardiology):\n1. 'My BP has been averaging 118/76 mmHg. Is my Lisinopril 10mg dose still optimal?'\n2. 'Given my LDL of 132 mg/dL, do you recommend a calcium score test or dietary intervention first?'\n3. 'Are there any specific exercises or heart-rate targets I should focus on?'",
+      "Top 3 questions tailored for Dr. Rajesh Sharma (Cardiology):\n1. 'My BP has been averaging 118/76 mmHg. Is my Lisinopril 10mg dose still optimal?'\n2. 'Given my LDL of 132 mg/dL, do you recommend a calcium score test or dietary intervention first?'\n3. 'Are there any specific exercises or heart-rate targets I should focus on?'",
   };
 
   const handleSendMessage = (textToSend?: string) => {
@@ -69,7 +69,7 @@ export default function AssistantPage() {
         replyContent = cannedAnswers.ibuprofen;
       } else if (lower.includes("food") || lower.includes("diet") || lower.includes("eat")) {
         replyContent = cannedAnswers.foods;
-      } else if (lower.includes("ask") || lower.includes("doctor") || lower.includes("question") || lower.includes("vance")) {
+      } else if (lower.includes("ask") || lower.includes("doctor") || lower.includes("question") || lower.includes("vance") || lower.includes("sharma")) {
         replyContent = cannedAnswers.questions;
       }
 

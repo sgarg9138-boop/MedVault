@@ -8,6 +8,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { formatCurrency, formatDate } from "@/lib/formatters";
 
 export default function OrdersPage() {
   const { orders, addToCart } = useStore();
@@ -82,14 +83,14 @@ export default function OrdersPage() {
                     </span>
                   </div>
                   <p className="text-slate-500 text-[11px]">
-                    Placed on {order.date} • Tracking:{" "}
+                    Placed on {formatDate(order.date)} • Tracking:{" "}
                     <span className="font-mono text-slate-700">{order.trackingNumber}</span>
                   </p>
                 </div>
 
                 <div className="text-right">
                   <p className="text-sm font-extrabold text-teal-700">
-                    ${order.total.toFixed(2)}
+                    {formatCurrency(order.total)}
                   </p>
                   <p className="text-[11px] text-slate-500">{order.estimatedDelivery}</p>
                 </div>
@@ -164,7 +165,7 @@ export default function OrdersPage() {
                           </p>
                         </div>
                         <span className="font-bold text-slate-900">
-                          ${(item.product.price * item.quantity).toFixed(2)}
+                          {formatCurrency(item.product.price * item.quantity)}
                         </span>
                       </div>
                     ))}
@@ -179,8 +180,14 @@ export default function OrdersPage() {
                     </span>
                     <p className="font-bold text-slate-800">{order.shippingAddress.fullName}</p>
                     <p className="text-slate-600">{order.shippingAddress.street}</p>
+                    {order.shippingAddress.locality && (
+                      <p className="text-slate-600">{order.shippingAddress.locality}</p>
+                    )}
                     <p className="text-slate-600">
-                      {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}
+                      {order.shippingAddress.city}, {order.shippingAddress.state} - {order.shippingAddress.zipCode}
+                    </p>
+                    <p className="text-slate-500 text-[11px]">
+                      {order.shippingAddress.country || "India"} • {order.shippingAddress.phone}
                     </p>
                   </div>
 

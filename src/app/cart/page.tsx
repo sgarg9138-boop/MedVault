@@ -17,23 +17,26 @@ import {
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { checkoutSchema, CheckoutInput } from "@/lib/validations";
+import { formatCurrency } from "@/lib/formatters";
 
 export default function CartPage() {
   const router = useRouter();
   const { cart, removeFromCart, updateCartQuantity, clearCart, cartTotal, placeOrder, patient } = useStore();
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
 
-  const deliveryFee = cartTotal > 50 || cartTotal === 0 ? 0.0 : 4.99;
+  const deliveryFee = cartTotal > 500 || cartTotal === 0 ? 0.0 : 49.0;
   const grandTotal = cartTotal > 0 ? cartTotal + deliveryFee : 0;
 
   // Form State
   const [formData, setFormData] = useState<CheckoutInput>({
-    fullName: patient.fullName,
-    phone: patient.emergencyContact.phone,
-    street: "742 Evergreen Terrace, Apt 4B",
-    city: "Springfield",
-    state: "OR",
-    zipCode: "97477",
+    fullName: patient.fullName.replace(/\s*\(Demo Patient\)/, ""),
+    phone: patient.emergencyContact.phone || "+91 98765 43210",
+    street: "Flat 402, Shanti Niketan Apartments, 12th Main Road",
+    locality: "HAL 2nd Stage, Indiranagar",
+    city: "Bengaluru",
+    state: "Karnataka",
+    zipCode: "560038",
+    country: "India",
     paymentMethod: "card",
     prescriptionConfirmed: true,
   });
@@ -62,17 +65,19 @@ export default function CartPage() {
       shippingAddress: {
         fullName: formData.fullName,
         street: formData.street,
+        locality: formData.locality,
         city: formData.city,
         state: formData.state,
         zipCode: formData.zipCode,
+        country: formData.country || "India",
         phone: formData.phone,
       },
       paymentMethod:
         formData.paymentMethod === "card"
-          ? "Visa ending in •••• 4242 (Simulated)"
+          ? "Credit Card ending in •••• 4242 (Simulated)"
           : formData.paymentMethod === "insurance"
-          ? "Apex Health Insurance Co-pay (Simulated)"
-          : "Cash on Delivery",
+          ? "Health Insurance TPA Co-pay (Simulated)"
+          : "Cash on Delivery (Simulated)",
     });
 
     setCheckoutModalOpen(false);
@@ -156,7 +161,7 @@ export default function CartPage() {
                     {item.product.genericName} • {item.product.strength} ({item.product.packageSize})
                   </p>
                   <p className="text-xs font-semibold text-teal-700">
-                    ${item.product.price.toFixed(2)} each
+                    {formatCurrency(item.product.price)} each
                   </p>
                 </div>
 
@@ -182,8 +187,8 @@ export default function CartPage() {
                     </button>
                   </div>
 
-                  <span className="text-sm font-bold text-slate-900 min-w-[65px] text-right">
-                    ${(item.product.price * item.quantity).toFixed(2)}
+                  <span className="text-sm font-bold text-slate-900 min-w-[75px] text-right">
+                    {formatCurrency(item.product.price * item.quantity)}
                   </span>
 
                   <button
@@ -216,22 +221,22 @@ export default function CartPage() {
             <div className="space-y-2 text-slate-600">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-semibold text-slate-800">${cartTotal.toFixed(2)}</span>
+                <span className="font-semibold text-slate-800">{formatCurrency(cartTotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Express Delivery</span>
-                <span>{deliveryFee === 0 ? "FREE (Orders > $50)" : `$${deliveryFee.toFixed(2)}`}</span>
+                <span>{deliveryFee === 0 ? "FREE (Orders > ₹500)" : formatCurrency(deliveryFee)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Pharmacist Review Fee</span>
-                <span className="text-emerald-700 font-medium">Included ($0.00)</span>
+                <span className="text-emerald-700 font-medium">Included (₹0.00)</span>
               </div>
             </div>
 
             <div className="pt-3 border-t border-slate-200 flex justify-between items-baseline text-slate-900">
               <span className="text-sm font-bold">Total Due</span>
               <span className="text-xl font-extrabold text-teal-700">
-                ${grandTotal.toFixed(2)}
+                {formatCurrency(grandTotal)}
               </span>
             </div>
 
@@ -280,7 +285,7 @@ export default function CartPage() {
             <div className="p-3 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 text-xs flex items-start gap-2">
               <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
               <p className="text-[11px] leading-relaxed">
-                <strong>Demo Checkout:</strong> No real money or card transaction will occur. This simulator generates an active order tracking ticket in your profile.
+                <strong>Demo Checkout:</strong> No real money transaction occurs. This simulator creates an active tracking ticket in your profile.
               </p>
             </div>
 
@@ -305,6 +310,7 @@ export default function CartPage() {
                   <input
                     type="text"
                     value={formData.phone}
+                    placeholder="e.g. +91 98765 43210"
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
                   />
@@ -314,11 +320,12 @@ export default function CartPage() {
                 </div>
               </div>
 
-              {/* Street Address */}
+              {/* Street Address & Locality */}
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Street Address *</label>
+                <label className="block font-semibold text-slate-700 mb-1">House / Flat / Street Address *</label>
                 <input
                   type="text"
+                  placeholder="e.g. Flat 402, Shanti Niketan Apartments, 12th Main Road"
                   value={formData.street}
                   onChange={(e) => setFormData({ ...formData, street: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
@@ -328,16 +335,30 @@ export default function CartPage() {
                 )}
               </div>
 
-              {/* City, State, ZIP */}
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Locality / Landmark</label>
+                <input
+                  type="text"
+                  placeholder="e.g. HAL 2nd Stage, Indiranagar"
+                  value={formData.locality || ""}
+                  onChange={(e) => setFormData({ ...formData, locality: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
+                />
+              </div>
+
+              {/* City, State, PIN, Country */}
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">City *</label>
+                  <label className="block font-semibold text-slate-700 mb-1">City / District *</label>
                   <input
                     type="text"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
                   />
+                  {formErrors.city && (
+                    <p className="text-rose-600 text-[11px] mt-1">{formErrors.city}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">State *</label>
@@ -347,21 +368,28 @@ export default function CartPage() {
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
                   />
+                  {formErrors.state && (
+                    <p className="text-rose-600 text-[11px] mt-1">{formErrors.state}</p>
+                  )}
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Postal/ZIP *</label>
+                  <label className="block font-semibold text-slate-700 mb-1">PIN Code *</label>
                   <input
                     type="text"
+                    placeholder="e.g. 560038"
                     value={formData.zipCode}
                     onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500"
                   />
+                  {formErrors.zipCode && (
+                    <p className="text-rose-600 text-[11px] mt-1">{formErrors.zipCode}</p>
+                  )}
                 </div>
               </div>
 
               {/* Payment Method */}
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Payment Method</label>
+                <label className="block font-semibold text-slate-700 mb-1">Payment Method (Simulated)</label>
                 <div className="grid grid-cols-3 gap-2">
                   <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
                     <input
@@ -372,7 +400,7 @@ export default function CartPage() {
                       onChange={() => setFormData({ ...formData, paymentMethod: "card" })}
                       className="text-teal-600"
                     />
-                    <span className="font-semibold text-slate-700">Test Card (4242)</span>
+                    <span className="font-semibold text-slate-700">Card (•••• 4242)</span>
                   </label>
 
                   <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
@@ -384,7 +412,7 @@ export default function CartPage() {
                       onChange={() => setFormData({ ...formData, paymentMethod: "insurance" })}
                       className="text-teal-600"
                     />
-                    <span className="font-semibold text-slate-700">Insurance Co-Pay</span>
+                    <span className="font-semibold text-slate-700">Insurance TPA</span>
                   </label>
 
                   <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
@@ -404,7 +432,7 @@ export default function CartPage() {
               {/* Total Summary Row */}
               <div className="p-3 bg-slate-50 rounded-xl flex justify-between items-center text-xs">
                 <span className="text-slate-600 font-medium">Order Total to Authorize:</span>
-                <span className="text-base font-extrabold text-teal-700">${grandTotal.toFixed(2)}</span>
+                <span className="text-base font-extrabold text-teal-700">{formatCurrency(grandTotal)}</span>
               </div>
 
               {/* Actions */}

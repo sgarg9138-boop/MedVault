@@ -25,7 +25,7 @@ export function Footer() {
                 <Lock className="w-3 h-3" /> Supabase Storage (Private)
               </span>
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-800 text-teal-400 text-[11px] font-medium border border-slate-700">
-                <FileCheck className="w-3 h-3" /> HIPAA Compatible RLS
+                <FileCheck className="w-3 h-3" /> Zero-Trust Encrypted RLS
               </span>
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-800 text-teal-400 text-[11px] font-medium border border-slate-700">
                 <HeartPulse className="w-3 h-3" /> AI Biomarker Extraction
@@ -132,13 +132,13 @@ export function Footer() {
               Medical Disclaimer & Emergency Notice
             </p>
             <p className="text-[11px] leading-relaxed text-slate-400">
-              MedVault is a personal health information management system. It does not provide medical diagnosis, treatment, or clinical prescriptions. If you are experiencing a medical emergency, call 911 or your local emergency services immediately.
+              MedVault is a personal health information management system. It does not provide medical diagnosis, treatment, or clinical prescriptions. If you are experiencing a medical emergency, call 112 (National Emergency Helpline, India) or your nearest hospital emergency department immediately.
             </p>
           </div>
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© {new Date().getFullYear()} MedVault Inc. All rights reserved. Zero-Knowledge Private Storage Architecture.</p>
+          <p>© {new Date().getFullYear()} MedVault Health. All rights reserved. Zero-Knowledge Private Storage Architecture.</p>
           <div className="flex gap-4">
             <span className="hover:text-slate-400">Privacy Policy</span>
             <span className="hover:text-slate-400">Terms of Service</span>
